@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', ()=>{
+/*document.addEventListener('DOMContentLoaded', ()=>{
     const contactoForm= document.getElementById('contacto-form');
     const itemNombre=document.getElementById('item-name');
     const itemApell=document.getElementById('item-surname');
@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const tabla= document.getElementById('tabla-body');
     const addItemBoton= document.getElementById('agregar-items');
     const actualizarItem = document.getElementById('update-item-btn');
+    const loadingIndicator = document.getElementById('loading-indicator');
     const statusMessage= document.getElementById('status-message');
 
     //modal de confirmacion 
@@ -16,7 +17,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let itemElim=null; //almacenar id elem a eliminar
     let itemEdit=null; //en edicion
 
-    const items=[];
+    const API_BASE_URL =
+    'https://689f90756e38a02c5816a15b.mockapi.io/api/v1/item' ;
+
 
     //funcion mostrar msj estado
     function showMessage(element, message, type='error') {
@@ -27,6 +30,31 @@ document.addEventListener('DOMContentLoaded', ()=>{
             element.classList.add('hidden');
         }, 5000);//segundos
     }
+
+    async function fetchWithRetry(url, options = {}, retries = 3, delay = 1000) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          // Intenta leer el mensaje de error del cuerpo de la respuesta si
+          // está disponible
+          const errorText = await response.text();
+          throw new Error( 'HTTP error! status: ' + response.status + ' - ' +
+            ( errorText || response.statusText ) ) ;
+        }
+        return response;
+      } catch( error ) {
+        if( i < retries - 1 ) {
+          console.warn( 'Intento ' + (i + 1) + ' fallido. Reintentando en ' +
+            ( delay / 1000 )  + ' segundos...', error ) ;
+          await new Promise(res => setTimeout(res, delay));
+          delay *= 2; // Duplicar el retraso para el siguiente intento
+        } else {
+          throw error; // Lanzar el error si se agotaron los reintentos
+        }
+      }
+    }
+  }
 
     function setItemEdit(id) {
         itemElim=null;
@@ -56,7 +84,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
             }
             data.forEach((item, index)=> {
                 const row= document.createElement('tr');
-                item.id=index +1;
                 ['id', 'name', 'surname', 'number', 'message'].forEach( attr => {
                     const td=document.createElement('td');
                     td.textContent=item[attr];
@@ -93,11 +120,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
             });
         }
 
-        function loadData() {
-            renderTabla(items);
-        }
+        async function loadData() {
+    loadingIndicator.classList.remove('hidden');
+    try {
+      const response = await fetchWithRetry(API_BASE_URL);
+      const data = await response.json();
+      renderTabla(data);
+    } catch (error) {
+      console.error('Error al cargar los datos:', error);
+      showMessage(statusMessage, `Error al cargar los datos: ${error.message}`);
+    } finally {
+      loadingIndicator.classList.add('hidden');
+    }
+  }
 
-        contactoForm.addEventListener('submit', (event) => {
+
+        contactoForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const name= itemNombre.value.trim();
             const surname=itemApell.value.trim();
@@ -111,40 +149,78 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
             const itemData= {name,surname,number,message};
 
-            if(itemEdit) {
-                items[itemEdit-1]=itemData;
-                showMessage( statusMessage,
-                'Elemento actualizado con éxito.', 'success' ) ;
-            } else {
-            items.push( itemData ) ;
-            showMessage( statusMessage, 'Elemento agregado con éxito.', 'success' ) ;
-            }
-            resetItemEdit();
-            contactoForm.reset();
-            loadData();
-            
+             loadingIndicator.classList.remove('hidden');
+
+    try {
+      let response;
+      if( itemEdit ) {
+        // Actualizar elemento existente (PUT)
+        response = await fetchWithRetry(`${API_BASE_URL}/${itemEdit}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(itemData)
         });
+        showMessage( statusMessage,
+          'Elemento actualizado con éxito.', 'success' ) ;
+      } else {
+        // Agregar nuevo elemento (POST)
+        response = await fetchWithRetry( API_BASE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(itemData)
+        } ) ;
+        showMessage( statusMessage,
+          'Elemento agregado con éxito.', 'success' ) ;
+      }
+      await response.json() ; // Consumir la respuesta
+      resetItemEdit() ;
+      contactoForm.reset() ;
+      loadData() ; // Recargar datos después de la operación
+    } catch( error ) {
+      console.error( 'Error al guardar el elemento:', error ) ;
+      showMessage( statusMessage,
+        "Error al guardar el elemento: " + error.message ) ;
+    } finally {
+      loadingIndicator.classList.add( 'hidden' ) ;
+    }
+  } ) ;
 
-        contactoForm.addEventListener('reset', resetItemEdit);
+  contactoForm.addEventListener( 'reset' , resetItemEdit ) ;
 
-        confElimBoton.addEventListener('click', () => {
-            confModal.style.display='none';
+  // Lógica del modal de confirmación
+  confElimBoton.addEventListener('click', async () => {
+    confModal.style.display = 'none'; // Oculta el modal
 
-            if(itemElim) {
-                items.splice(itemElim-1, 1);
-                showMessage( statusMessage,
-                'Elemento eliminado con éxito.', 'success' ) ;
-                loadData() ;
-                itemElim=null;
-            }
+    if(itemElim) {
+      loadingIndicator.classList.remove('hidden');
+      try {
+        const response =
+          await fetchWithRetry(`${API_BASE_URL}/${itemElim}`, {
+            method: 'DELETE'
+          } ) ;
+        if( response.ok ) {
+          showMessage( statusMessage,
+            'Elemento eliminado con éxito.', 'success' ) ;
+          loadData() ; // Recargar datos después de eliminar
+        } else {
+          throw new Error( 'No se pudo eliminar el elemento.' ) ;
+        }
+      } catch (error) {
+        console.error( 'Error al eliminar el elemento:', error ) ;
+        showMessage( statusMessage,
+          'Error al eliminar el elemento: ' + error.message ) ;
+      } finally {
+        loadingIndicator.classList.add( 'hidden' ) ;
+        itemElim = null; // Limpiar el ID después de la operación
+      }
+    }
+  } ) ;
 
-        });
+  noElimBoton.addEventListener('click', () => {
+    confModal.style.display = 'none'; // Oculta el modal
+    itemElim = null; // Limpiar el ID
+  } ) ;
 
-        noElimBoton.addEventListener('click', ()=> {
-            confModal.style.display='none';
-            itemElim=null;
-        });
-        loadData();
-    
-
-});
+  // Cargar los datos iniciales al cargar la página
+  loadData() ;
+} ) ;*/

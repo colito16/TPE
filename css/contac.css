@@ -212,12 +212,12 @@ form button.cancel-btn:hover {
   background-color: #bbb;
 }
 
-@media screen and (min-width: 768px){
+/*@media screen and (min-width: 768px){
   main {
     display: grid;
     grid-template-columns: 3fr 2fr;
 }
-}
+}*/
 
 
 
