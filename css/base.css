@@ -1,0 +1,361 @@
+body {
+  font-family: 'Inter', sans-serif; /* Fuente genérica */
+  background-color: #2c3e50; /* Color de fondo claro */
+  color: #333; /* Color de texto oscuro */
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #2c3e50; /* Azul oscuro para el encabezado */
+  color: #ecf0f1; /* Texto claro */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+/* Contenedor dentro del encabezado para centrar y espaciar */
+header > div {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+h1 {
+  font-size: 2rem; /* Tamaño de fuente para h1 */
+  font-weight: bold;
+  text-align: center;
+  margin: 0; /* Eliminar margen por defecto del h1 */
+  padding: 8px;
+  padding-top: 12px;
+}
+
+/* Estilos del botón de menú hamburguesa */
+button.hamburger-menu {
+  display: block; /* Visible por defecto en móvil */
+  color: #ecf0f1;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  outline: none; /* Elimina el contorno al hacer focus */
+}
+
+/* Menú de navegación */
+nav {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  position: absolute; /* Para que se superponga al contenido */
+   top: 60px; /* Ajustar según la altura del header */
+  left: 0;
+  background-color: #34495e; /* Fondo para el menú desplegado */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 999;
+  border-radius: 0 0 0.75rem 0.75rem;
+  overflow: hidden; /* Para que los bordes redondeados se apliquen bien */
+}
+
+nav.nav-open {
+  display: flex; /* Muestra el menú cuando tiene la clase 'nav-open' */
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  border-bottom: 10px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+nav li {
+  margin: auto;
+  width: 100%;
+  padding: 4px;
+}
+
+nav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box; /* Incluye relleno y borde en el ancho */
+}
+
+nav a:hover, nav a:focus {
+  background-color: #297fb94d; /* Un tono más oscuro al pasar el ratón */
+  border-radius: 0.5rem;
+}
+
+main {
+  max-width: 100%;
+}
+
+#aviso {
+  
+  width: 100%;
+  height: 30px;
+}
+
+.entrada {
+  position: relative;
+  background:
+    linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+    url(../img/amasando.jpg);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 600px;
+}
+.tituloentrada {
+  color:#2d3844;
+  font-size: 2.5rem;
+  margin:30px;
+  margin-bottom: 4px; 
+  text-align: center;
+  width: 90%;
+  max-width: 900px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-shadow: 3px 2px 8px black;
+  font-weight: 800;
+
+}
+
+.parrentrada {
+  font-size: 1rem;
+  margin-top: 10px;
+  font-weight: 800;
+  color: black; /* Azul para los títulos */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  width: 92%;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-shadow: 1px 1px 2px white;
+}
+
+article {
+  padding-bottom:3px;
+  border-bottom: 1px solid #eee;
+}
+
+article:last-child {
+  border-bottom: none;
+}
+
+.recetamasvisitada {
+  position: relative;
+  background:
+    linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+    url(../img/fondorogel.jpg);
+  background-size: cover;
+  background-position: right top;
+  display: flex;
+  flex-direction: row;
+  justify-content:left;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  height: 600px;
+}
+
+.recetamasvisitada h3 {
+  text-align: left;
+  font-size: 3.5rem;
+  width: 100px;
+  color:white;
+  margin: 5.5px;
+  font-family:'Times New Roman', Times, serif;
+  text-shadow: 1px 1px 2px black;
+}
+
+section {
+  background-color: #f8f1be;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 0rem;
+  margin-top: 0rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  
+}
+
+#platoprin {
+  position: static;
+  background:
+    linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.3)),
+    url(../img/torrepanq.jpg);
+  background-size: cover;
+  background-position:center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 600px;
+  width: 100%; 
+}
+
+#postres {
+   position: static;
+  background:
+    linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.3)),
+    url(../img/chocotorta.jpg);
+  background-size: cover;
+  background-position:center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 800px;
+}
+
+
+.titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;
+  color:#2c3e50
+}
+
+h3 {
+  font-size: 1.25rem; /* Tamaño de fuente para h3 */
+  font-weight: 500;
+  color: #2980b9; /* Azul para los títulos */
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-weight: 700;
+  color:black;
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+p {
+  margin-bottom: 1rem;
+  color: black; /* Color de texto más suave para párrafos */
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  display: block;
+  margin: 1rem auto;
+}
+
+a {
+  color: #3498db; /* Color para enlaces */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  width:98%;
+}
+
+footer p {
+  margin: 0;
+  color: #ecf0f1;
+}
+
+@media screen and (min-width: 768px) {
+  /* Menú fijo en pantallas grandes */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  /* Oculta el botón de hamburguesa en pantallas grandes */
+  button.hamburger-menu {
+    display: none;
+  }
+
+  /* Muestra el menú de navegación en línea en pantallas grandes */
+  nav {
+    display: block; /* Vuelve a modelo de bloque para el flujo normal */
+    position: static; /* Restaura la posición estática */
+    width: auto; /* Ancho automático */
+    background-color: transparent; /* Fondo transparente */
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  nav ul {
+    flex-direction: row; /* Elementos del menú en fila */
+    justify-content: flex-end; /* Alinea a la derecha */
+    
+  }
+
+  nav li {
+    margin-left: 1rem; /* Espacio entre elementos del menú */
+    margin-bottom: 0;
+    width: auto;
+  }
+
+  nav a {
+    padding: 0.5rem 1rem; /* Ajusta el relleno interno para pantallas grandes */
+    border-radius: 0.5rem;
+  }
+
+  .columnamedia {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+      /* Ejemplo: una columna para barra lateral, otra para contenido */
+    padding: 0;
+    margin: 0;
+    
+  }
+
+  section.right {
+    grid-column-start: 1;
+  }
+
+  .tituloentrada {
+    font-size: 4rem;
+    width: 90%;
+  }
+
+  .parrentrada {
+    font-size: 1.5rem;
+    width: 70%;
+  }
+
+   .recetamasvisitada {
+    justify-content: flex-end; 
+    text-align: right; 
+  }
+
+  .recetamasvisitada h3 {
+    text-align: right; 
+    width: 100%; 
+    margin-right: 20px;
+  }
+}
