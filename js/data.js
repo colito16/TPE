@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Base de Mock API
   const API_BASE_URL =
-    'https://689f90756e38a02c5816a15b.mockapi.io/api/v1/item' ;
+    'https://6916a106a7a34288a27ddfbe.mockapi.io/api/v1/datosDinamicos' ;
 
   // Función para mostrar mensajes de estado (error/éxito)
   function showMessage(element, message, type = 'error') {

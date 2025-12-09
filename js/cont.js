@@ -1,4 +1,4 @@
-/*document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', ()=>{
     const contactoForm= document.getElementById('contacto-form');
     const itemNombre=document.getElementById('item-name');
     const itemApell=document.getElementById('item-surname');
@@ -18,7 +18,7 @@
     let itemEdit=null; //en edicion
 
     const API_BASE_URL =
-    'https://689f90756e38a02c5816a15b.mockapi.io/api/v1/item' ;
+    'https://6916a106a7a34288a27ddfbe.mockapi.io/api/v1/Users' ;
 
 
     //funcion mostrar msj estado
@@ -223,4 +223,4 @@
 
   // Cargar los datos iniciales al cargar la página
   loadData() ;
-} ) ;*/
+} ) ;
